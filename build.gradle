@@ -1,0 +1,66 @@
+buildscript {
+    ext {
+        grailsVersion = project.grailsVersion
+    }
+    repositories {
+        mavenLocal()
+        maven { url "https://repo.grails.org/grails/core" }
+
+        jcenter()
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.grails:grails-gradle-plugin:$grailsVersion"
+    }
+}
+
+version '0.1.0-SNAPSHOT'
+group "com.example"
+
+apply plugin: 'spring-boot'
+apply plugin: 'org.grails.grails-web'
+apply plugin: 'org.grails.grails-gsp'
+apply plugin: 'war'
+
+ext {
+    grailsVersion = project.grailsVersion
+    gradleWrapperVersion = project.gradleWrapperVersion
+}
+
+repositories {
+    mavenLocal()
+    maven { url "https://repo.grails.org/grails/core" }
+
+    jcenter()
+    mavenCentral()
+}
+
+dependencies {
+    agent 'org.springframework:springloaded:1.2.4.RELEASE'
+
+    compile "org.springframework.boot:spring-boot-starter-logging:${springBootVersion}"
+    compile "org.springframework.boot:spring-boot-starter-actuator:${springBootVersion}"
+    compile "org.springframework.boot:spring-boot-autoconfigure:${springBootVersion}"
+    provided "org.springframework.boot:spring-boot-starter-tomcat:${springBootVersion}"
+
+    compile "org.grails:grails-dependencies:${grailsVersion}"
+    compile "org.grails:grails-web-boot:${grailsVersion}"
+
+    console "org.grails:grails-console:${grailsVersion}"
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = gradleWrapperVersion
+}
+
+jar {
+    archiveName = "example.jar"
+}
+
+bootRun {
+    jvmArgs = ['-Dspring.output.ansi.enabled=always']
+}
+
+war {
+    archiveName = 'example-api.war'
+}
